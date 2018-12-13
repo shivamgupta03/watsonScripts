@@ -8,7 +8,7 @@ import os
 from watson_developer_cloud import VisualRecognitionV3
 
 dropbox_oauth_token = "BFlMvU8bdqcAAAAAAAAEQsl7bbgRPhTLA9VkyABAB_oIn0YhmiYbsUGAL_BdcidE"
-dropbox_folder = "/Screenshots"
+dropbox_folder = "/Screenshots/Lenovo PC Watson Imaging/images"
 watson_apikey = "HUbCc2QMJXXVI0avncesA0IvuMS7raS3uwdu0xrlm30e" 
 
 def main():
@@ -38,26 +38,24 @@ def cleanup_temp_dir(temp_dir):
 def download_from_dropbox(temp_dir):
 	# Download screenshots from dropbox
 	dbx = dropbox.Dropbox(dropbox_oauth_token)
-	results = dbx.files_list_folder(dropbox_folder)
-	for entry in results.entries:
-		files = dbx.files_list_folder(entry.path_display)
-		print("Downloading and saving images from Dropbox")
-		for file in files.entries:
-			# Download files from dropbox
-			try:
-				md, res = dbx.files_download(file.path_display)
-			except dropbox.exceptions.HttpError as err:
-				print('*** HTTP error', err)
-				return None
-			# Convert PDF to JPEG
-			data = convert_from_bytes(res.content)
-			filename = os.path.join(temp_dir, file.name).replace(".pdf", ".jpeg")
-			
-			# Save images as jpeg
-			for page in data:
-				print(filename)
-				page.save(filename, 'JPEG')
+	folders = dbx.files_list_folder(dropbox_folder)
+	for folder in folders.entries:
+		files = dbx.files_list_folder(folder.path_display)
+		print("Downloading and saving images from {}".format(folder.name))
+		for entry in files.entries:
+			for file in files.entries:
+				# Download files from dropbox
+				try:
+					md, res = dbx.files_download(file.path_display)
+				except dropbox.exceptions.HttpError as err:
+					print('*** HTTP error', err)
+					return None
+				
+				filename = os.path.join(temp_dir, folder.name + file.name)
 
+				with open(filename, 'wb') as f:
+					data = f.write(res.content)
+				
 def create_temp_dir():
 	# Create a temporary directory for dropbox screenshots
 	temp_dir = os.path.join(os.getcwd(), "temp")
