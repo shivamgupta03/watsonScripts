@@ -1,0 +1,589 @@
+pip install --upgrade "ibm-watson>=3.0.3"
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, CategoriesOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    url='www.ibm.com',
+    features=Features(categories=CategoriesOptions(limit=3))).get_result()
+
+print(json.dumps(response, indent=2))
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 1536,
+    "features": 1
+  },
+  "retrieved_url": "https://www.ibm.com/us-en/",
+  "categories": [
+    {
+      "score": 0.594296,
+      "label": "/technology and computing/software"
+    },
+    {
+      "score": 0.448495,
+      "label": "/science/mathematics/statistics"
+    },
+    {
+      "score": 0.426429,
+      "label": "/business and industrial"
+    }
+  ],
+  "language": "en"
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, ConceptsOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    url='www.ibm.com',
+    features=Features(concepts=ConceptsOptions(limit=3))).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 1536,
+    "features": 1
+  },
+  "retrieved_url": "http://www.ibm.com/us-en/",
+  "concepts": [
+    {
+      "text": "Social network service",
+      "relevance": 0.92186,
+      "dbpedia_resource": "http://dbpedia.org/resource/Social_network_service"
+    },
+    {
+      "text": "Thomas J. Watson",
+      "relevance": 0.871908,
+      "dbpedia_resource": "http://dbpedia.org/resource/Thomas_J._Watson"
+    },
+    {
+      "text": "Lotus Software",
+      "relevance": 0.839578,
+      "dbpedia_resource": "http://dbpedia.org/resource/Lotus_Software"
+    }
+  ],
+  "language": "en"
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, EmotionOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    html="<html><head><title>Fruits</title></head><body><h1>Apples and Oranges</h1><p>I love apples! I don't like oranges.</p></body></html>",
+    features=Features(emotion=EmotionOptions(targets=['apples','oranges']))).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 37,
+    "features": 1
+  },
+  "language": "en",
+  "emotion": {
+    "targets": [
+      {
+        "text": "apples",
+        "emotion": {
+          "sadness": 0.028574,
+          "joy": 0.859042,
+          "fear": 0.02752,
+          "disgust": 0.017519,
+          "anger": 0.012855
+        }
+      },
+      {
+        "text": "oranges",
+        "emotion": {
+          "sadness": 0.514253,
+          "joy": 0.078317,
+          "fear": 0.074223,
+          "disgust": 0.058103,
+          "anger": 0.126859
+        }
+      }
+    ],
+    "document": {
+      "emotion": {
+        "sadness": 0.32665,
+        "joy": 0.563273,
+        "fear": 0.033387,
+        "disgust": 0.022637,
+        "anger": 0.041796
+      }
+    }
+  }
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    url='www.cnn.com',
+    features=Features(entities=EntitiesOptions(sentiment=True,limit=1))).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 2708,
+    "features": 1
+  },
+  "retrieved_url": "http://www.cnn.com/",
+  "language": "en",
+  "entities": [
+    {
+      "type": "Company",
+      "text": "CNN",
+      "sentiment": {
+        "score": 0.0,
+        "label": "neutral"
+      },
+      "relevance": 0.784947,
+      "disambiguation": {
+        "subtype": [
+          "Broadcast",
+          "AwardWinner",
+          "RadioNetwork",
+          "TVNetwork"
+        ],
+        "name": "CNN",
+        "dbpedia_resource": "http://dbpedia.org/resource/CNN"
+      },
+      "count": 9
+    }
+  ]
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, KeywordsOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    url='www.ibm.com',
+    features=Features(keywords=KeywordsOptions(sentiment=True,emotion=True,limit=2))).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 1536,
+    "features": 1
+  },
+  "keywords": [
+    {
+      "text": "curated online courses",
+      "sentiment": {
+        "score": 0.792454
+      },
+      "relevance": 0.864624,
+      "emotions": {
+        "sadness": 0.188625,
+        "joy": 0.522781,
+        "fear": 0.12012,
+        "disgust": 0.103212,
+        "anger": 0.106669
+      }
+    },
+    {
+      "text": "free virtual server",
+      "sentiment": {
+        "score": 0.664726
+      },
+      "relevance": 0.864593,
+      "emotions": {
+        "sadness": 0.265225,
+        "joy": 0.532354,
+        "fear": 0.07773,
+        "disgust": 0.090112,
+        "anger": 0.102242
+      }
+    }
+  ],
+  "language": "en",
+  "retrieved_url": "https://www.ibm.com/us-en/"
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, MetadataOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    url='www.ibm.com',
+    features=Features(metadata=MetadataOptions())).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 1536,
+    "features": 1
+  },
+  "retrieved_url": "https://www.ibm.com/us-en/",
+  "metadata": {
+    "title": "IBM - United States",
+    "publication_date": "2015-10-01T00:00:00",
+    "image": "",
+    "feeds": [],
+    "authors": []
+  },
+  "language": "en"
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, RelationsOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    text='Leonardo DiCaprio won Best Actor in a Leading Role for his performance.',
+    features=Features(relations=RelationsOptions())).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 79,
+    "features": 1
+  },
+  "relations": [
+    {
+      "type": "awardedTo",
+      "sentence": "Leonardo DiCaprio won Best Actor in a Leading Role for his performance.",
+      "score": 0.680715,
+      "arguments": [
+        {
+          "text": "Best Actor",
+          "location": [
+            22,
+            32
+          ],
+          "entities": [
+            {
+              "type": "EntertainmentAward",
+              "text": "Best Actor"
+            }
+          ]
+        },
+        {
+          "text": "Leonardo DiCaprio",
+          "location": [
+            0,
+            17
+          ],
+          "entities": [
+            {
+              "type": "Person",
+              "text": "Leonardo DiCaprio"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "language": "en"
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, SemanticRolesOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    text='IBM has one of the largest workforces in the world',
+    features=Features(semantic_roles=SemanticRolesOptions())).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 50,
+    "features": 1
+  },
+  "semantic_roles": [
+    {
+      "subject": {
+        "text": "IBM"
+      },
+      "sentence": "IBM has one of the largest workforces in the world",
+      "object": {
+        "text": "one of the largest workforces in the world"
+      },
+      "action": {
+        "verb": {
+          "text": "have",
+          "tense": "present"
+        },
+        "text": "has",
+        "normalized": "have"
+      }
+    }
+  ],
+  "language": "en"
+}
+
+import json
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 import Features, SentimentOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+response = natural_language_understanding.analyze(
+    url='www.wsj.com/news/markets',
+    features=Features(sentiment=SentimentOptions(targets=['stocks']))).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "usage": {
+    "text_units": 1,
+    "text_characters": 1188,
+    "features": 1
+  },
+  "sentiment": {
+    "targets": [
+      {
+        "text": "stocks",
+        "score": 0.279964,
+        "label": "positive"
+      }
+    ],
+    "document": {
+      "score": 0.127034,
+      "label": "positive"
+    }
+  },
+  "retrieved_url": "https://www.wsj.com/news/markets",
+  "language": "en"
+}
+
+from ibm_watson import NaturalLanguageUnderstandingV1
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='{version}',
+    iam_apikey='{apikey}',
+    url='{url}'
+)
+
+from ibm_watson import NaturalLanguageUnderstandingV1
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='{version}',
+    username='{username}',
+    password='{password}',
+    url='{url}'
+)
+
+https://gateway.watsonplatform.net/natural-language-understanding/api
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='{version}',
+    iam_apikey='{apikey}',
+    url='https://gateway-wdc.watsonplatform.net/natural-language-understanding/api'
+)
+
+natural_language_understanding.set_url('https://gateway-wdc.watsonplatform.net/natural-language-understanding/api')
+
+from ibm_watson import ApiException
+try:
+    # Invoke a Natural Language Understanding method
+except ApiException as ex:
+    print "Method failed with status code " + str(ex.code) + ": " + ex.message
+
+response = natural_language_understanding.methodName(
+    parameters,
+    headers = {
+        'Custom-Header': '{header_value}'
+    })
+
+natural_language_understanding.set_detailed_response(True)
+response = natural_language_understanding.methodName(parameters)
+# Access response from methodName
+print(json.dumps(response.get_result(), indent=2))
+# Access information in response headers
+print(response.get_headers())
+# Access HTTP response status
+print(response.get_status_code())
+
+natural_language_understanding.set_default_headers({'x-watson-learning-opt-out': "true"})
+
+analyze(self, features, text=None, html=None, url=None, clean=None, xpath=None, fallback_to_raw=None, return_analyzed_text=None, language=None, limit_text_characters=None, **kwargs)
+
+import json
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_watson.natural_language_understanding_v1 \
+    import Features, EntitiesOptions, KeywordsOptions
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}')
+
+response = natural_language_understanding.analyze(
+    text='IBM is an American multinational technology company '
+    'headquartered in Armonk, New York, United States, '
+    'with operations in over 170 countries.',
+    features=Features(
+        entities=EntitiesOptions(emotion=True, sentiment=True, limit=2),
+        keywords=KeywordsOptions(emotion=True, sentiment=True,
+                                 limit=2))).get_result()
+
+print(json.dumps(response, indent=2))
+
+{
+  "entities": [
+    {
+      "type": "Company",
+      "relevance": 0.89792,
+      "count": 12,
+      "name": "IBM",
+      "disambiguation": {
+        "name": "IBM",
+        "dbpedia_resource": "http://dbpedia.org/resource/IBM",
+        "subtype": [
+          "SoftwareLicense",
+          "OperatingSystemDeveloper",
+          "ProcessorManufacturer",
+          "SoftwareDeveloper",
+          "CompanyFounder",
+          "ProgrammingLanguageDesigner",
+          "ProgrammingLanguageDeveloper"
+        ]
+      },
+      "emotion": {
+        "sadness": 0.271362,
+        "joy": 0.618694,
+        "fear": 0.033186,
+        "disgust": 0.056113,
+        "anger": 0.099437
+      }
+    }
+  ],
+  "keywords": [
+    {
+      "emotion": {
+        "sadness": 0.174379,
+        "joy": 0.66067,
+        "fear": 0.051475,
+        "disgust": 0.114401,
+        "anger": 0.044105
+      },
+      "relevance": "0.900808",
+      "sentiment": {
+        "score": 0.419889
+      },
+      "text": "free trial",
+      "count": 1
+    }
+  ],
+  "language": "en",
+  "retrieved_url": "https://www.ibm.com/us-en/"
+}
+list_models(self, **kwargs)
+import json
+from ibm_watson import NaturalLanguageUnderstandingV1
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}')
+
+response = natural_language_understanding.list_models().get_result()
+
+print(json.dumps(response, indent=2))
+{
+  "models": [
+    {
+      "workspace_id": "504503a0-62c1-12e9-8346-d190294d088d",
+      "version_description": "pharmaceutical entities",
+      "version": "1.1",
+      "status": "available",
+      "name": null,
+      "model_id": "2987ca3f-205f-4786-a168-2d8026ddcc9b",
+      "language": "en",
+      "description": null,
+      "created": "2019-04-24T14:50:22Z"
+    }
+  ]
+}
+delete_model(self, model_id, **kwargs)
+import json
+from ibm_watson import NaturalLanguageUnderstandingV1
+
+natural_language_understanding = NaturalLanguageUnderstandingV1(
+    version='2018-11-16',
+    iam_apikey='{apikey}',
+    url='{url}')
+
+response = natural_language_understanding.delete_model(
+    model_id='model_id').get_result()
+
+print(json.dumps(response, indent=2))
+{
+  "status": "OK",
+  "deleted": "2987ca3f-205f-4786-a168-2d8026ddcc9b"
+}
+
