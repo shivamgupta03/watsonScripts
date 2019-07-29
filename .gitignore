@@ -1,3 +1,9 @@
+# added by shivam starts
+*/venv/*
+*hardware_manuals*
+*.idea*
+# added by shivam ends
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
